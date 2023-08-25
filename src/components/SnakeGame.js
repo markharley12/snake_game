@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react';
 const SnakeGame = () => {
   const GRID_SIZE = 30; // Grid size
   const INITIAL_SNAKE = [
-    { x: 10, y: 10 },
-    { x: 9, y: 10 },
-    { x: 8, y: 10 },
+    { x: 0, y: 10 },
+    { x: -1, y: 10 },
+    { x: -2, y: 10 },
   ];
   const INITIAL_FOOD = { x: 20, y: 10 }; // Initial food position
   const INITIAL_DIRECTION = 'RIGHT'; // Initial direction
@@ -29,16 +29,24 @@ const SnakeGame = () => {
   const handleKeyDown = (e) => {
     switch (e.key) {
       case 'ArrowUp':
-        setDir('UP');
+        if (dir != 'DOWN'){
+          setDir('UP');
+        }
         break;
       case 'ArrowDown':
-        setDir('DOWN');
+        if (dir != 'UP'){
+          setDir('DOWN');
+        }
         break;
       case 'ArrowLeft':
-        setDir('LEFT');
+        if (dir != 'RIGHT'){
+          setDir('LEFT');
+        }
         break;
       case 'ArrowRight':
-        setDir('RIGHT');
+        if (dir != 'LEFT'){
+          setDir('RIGHT');
+        }
         break;
       default:
         break;
@@ -52,19 +60,43 @@ const SnakeGame = () => {
     // Update the new head's position based on the current direction
     switch (dir) {
       case 'UP':
-        newHead.y = (newHead.y - 1 + GRID_SIZE) % GRID_SIZE;
+        newHead.y = newHead.y - 1;
+        if (newHead.y < 0) {
+          resetGame();
+          return;
+        }
         break;
       case 'DOWN':
-        newHead.y = (newHead.y + 1) % GRID_SIZE;
+        newHead.y = newHead.y + 1;
+        if (newHead.y >= GRID_SIZE) {
+          resetGame();
+          return;
+        }
         break;
       case 'LEFT':
-        newHead.x = (newHead.x - 1 + GRID_SIZE) % GRID_SIZE;
+        newHead.x = newHead.x - 1;
+        if (newHead.x < 0) {
+          resetGame();
+          return;
+        }
         break;
       case 'RIGHT':
-        newHead.x = (newHead.x + 1) % GRID_SIZE;
+        newHead.x = newHead.x + 1;
+        if (newHead.x >= GRID_SIZE) {
+          resetGame();
+          return;
+        }
         break;
       default:
         break;
+    }
+
+    // Check for collision with body
+    for (let i = 1; i < newSnake.length; i++) { // Start from 1 to skip the head
+      if (newSnake[i].x === newHead.x && newSnake[i].y === newHead.y) {
+        resetGame();  // Call reset game function if collision is detected
+        return;  // Exit the function early
+      }
     }
   
     newSnake.unshift(newHead); // Add the new head to the snake
@@ -94,6 +126,12 @@ const SnakeGame = () => {
       // If the food wasn't eaten, no need to change its position
       setFood(food);
     }
+  };
+
+  const resetGame = () => {
+    setScore(0);
+    setSnake(INITIAL_SNAKE);
+    setDir(INITIAL_DIRECTION);
   };
   
   useEffect(() => {
