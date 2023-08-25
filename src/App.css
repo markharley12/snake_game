@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  /* background-color: black; */
+  /* color: black; */
+  /* align-items: center; */
+  /* justify-content: center; */
 }
 
 .App-header {
@@ -11,6 +15,17 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.App-footer {
+  background-color: #282c34;
+  min-height: 12vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: grey;
 }
 
 .game-container {
@@ -28,7 +43,7 @@
 }
 
 .score-board {
-  font-size: 24px;
+  font-size: 48px;
   color: white;
   margin-bottom: 10px;
 }

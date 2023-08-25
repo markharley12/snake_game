@@ -112,17 +112,17 @@ const SnakeGame = () => {
         tabIndex={0} onKeyDown={(e) => handleKeyDown(e)}
          autoFocus
     >
-      <div className="score-board">Score: {score}</div> {/* Display the score here */}
-      <div className="game-grid"> {/* Apply the game-grid class here */}
+      <div className="score-board" style={{backgroundColor: 'orange'}} >Score: {score}</div> {/* Display the score here */}
+      <div className="game-grid" style={{display: 'centre' , alignItems: 'center' }}> {/* Apply the game-grid class here */}
         {createGrid().map((row, rowIndex) => (
-          <div key={rowIndex} style={{ display: 'flex' }}>
+          <div key={rowIndex} style={{ display: 'flex', justifyContent: 'centre' }}>
             {row.map((cell, cellIndex) => (
               <div 
                 key={cellIndex}
                 style={{
-                  width: 20,
-                  height: 20,
-                  backgroundColor: cell === 0 ? 'white' : cell === 1 ? 'green' : 'red',
+                  width: 30,
+                  height: 30,
+                  backgroundColor: cell === 0 ? 'grey' : cell === 1 ? 'green' : 'red',
                 }}
               />
             ))}
