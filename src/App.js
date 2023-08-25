@@ -1,5 +1,5 @@
 import React from 'react';
-import SnakeGame from './components/SnakeGame';
+import SnakeGame from './components/SnakeGame.js';
 
 function App() {
   return (
