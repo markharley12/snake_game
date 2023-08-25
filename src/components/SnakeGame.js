@@ -15,6 +15,7 @@ const SnakeGame = () => {
   const [snake, setSnake] = useState(INITIAL_SNAKE);
   const [food, setFood] = useState(INITIAL_FOOD);
   const [dir, setDir] = useState(INITIAL_DIRECTION);
+  const [highScore, setHighScore] = useState(INITIAL_SCORE);
   const [score, setScore] = useState(INITIAL_SCORE);
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -133,6 +134,9 @@ const SnakeGame = () => {
 
   const gameOver = () => {
     setIsGameOver(true);
+    if (score > highScore) {
+      setHighScore(score);
+    };
   };
 
   const resetGame = () => {
@@ -155,6 +159,9 @@ const SnakeGame = () => {
 
   return (
     <div className='game-container' tabIndex={0} onKeyDown={(e) => handleKeyDown(e)} autoFocus>
+      <div className="score-board" style={{backgroundColor: 'blue'}}>
+        High Score: {highScore}
+      </div>
       <div className="score-board" style={{backgroundColor: 'orange'}}>
         Score: {score}
       </div>
