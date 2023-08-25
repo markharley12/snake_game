@@ -10,10 +10,12 @@ const SnakeGame = () => {
   ];
   const INITIAL_FOOD = { x: 20, y: 10 }; // Initial food position
   const INITIAL_DIRECTION = 'RIGHT'; // Initial direction
+  const INITIAL_SCORE = 0; // Initial direction
 
   const [snake, setSnake] = useState(INITIAL_SNAKE);
   const [food, setFood] = useState(INITIAL_FOOD);
   const [dir, setDir] = useState(INITIAL_DIRECTION);
+  const [score, setScore] = useState(INITIAL_SCORE);
 
   const createGrid = () => {
     let grid = Array.from({ length: 30 }, () => Array(30).fill(0));
@@ -83,6 +85,9 @@ const SnakeGame = () => {
   
       // Update the food's position
       setFood({ x: newFoodX, y: newFoodY });
+
+      // Update the score
+      setScore(score + 10);
   
       // Optionally, you can also grow the snake here
     } else {
@@ -107,6 +112,7 @@ const SnakeGame = () => {
         tabIndex={0} onKeyDown={(e) => handleKeyDown(e)}
          autoFocus
     >
+      <div className="score-board">Score: {score}</div> {/* Display the score here */}
       <div className="game-grid"> {/* Apply the game-grid class here */}
         {createGrid().map((row, rowIndex) => (
           <div key={rowIndex} style={{ display: 'flex' }}>
