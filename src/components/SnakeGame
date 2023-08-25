@@ -1,0 +1,63 @@
+import React, { useState, useEffect } from 'react';
+
+const SnakeGame = () => {
+  const [snake, setSnake] = useState([{ x: 10, y: 10 }]);
+  const [food, setFood] = useState({ x: 20, y: 10 });
+  const [dir, setDir] = useState('RIGHT');
+
+  // Create a grid
+  const createGrid = () => {
+    let grid = Array.from({ length: 30 }, () => Array(30).fill(0));
+    snake.forEach((segment) => {
+      grid[segment.y][segment.x] = 1;
+    });
+    grid[food.y][food.x] = 2;
+    return grid;
+  };
+
+  // Keyboard controls
+  const handleKeyDown = (e) => {
+    switch (e.key) {
+      case 'ArrowUp':
+        setDir('UP');
+        break;
+      case 'ArrowDown':
+        setDir('DOWN');
+        break;
+      case 'ArrowLeft':
+        setDir('LEFT');
+        break;
+      case 'ArrowRight':
+        setDir('RIGHT');
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Game logic
+  useEffect(() => {
+    // Implement movement, collision, and eating logic here
+  });
+
+  // Render the game
+  return (
+    <div tabIndex="0" onKeyDown={handleKeyDown}>
+      {createGrid().map((row) => (
+        <div style={{ display: 'flex' }}>
+          {row.map((cell) => (
+            <div
+              style={{
+                width: 20,
+                height: 20,
+                backgroundColor: cell === 0 ? 'white' : cell === 1 ? 'green' : 'red',
+              }}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default SnakeGame;
