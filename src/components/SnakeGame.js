@@ -12,8 +12,8 @@ const SnakeGame = () => {
   const INITIAL_DIRECTION = 'RIGHT'; // Initial direction
 
   const [snake, setSnake] = useState(INITIAL_SNAKE);
-  const [food, setFood] = useState({ x: 20, y: 10 });
-  const [dir, setDir] = useState('RIGHT');
+  const [food, setFood] = useState(INITIAL_FOOD);
+  const [dir, setDir] = useState(INITIAL_DIRECTION);
 
   const createGrid = () => {
     let grid = Array.from({ length: 30 }, () => Array(30).fill(0));
@@ -71,35 +71,58 @@ const SnakeGame = () => {
     setSnake(newSnake); // Update the snake state
   };
   
+  const updateFoodPosition = () => {
+    // Get the snake's head position
+    const snakeHead = snake[0];
+  
+    // Check if the head's position matches the food's position
+    if (snakeHead.x === food.x && snakeHead.y === food.y) {
+      // Generate random coordinates for the new food position
+      const newFoodX = Math.floor(Math.random() * GRID_SIZE);
+      const newFoodY = Math.floor(Math.random() * GRID_SIZE);
+  
+      // Update the food's position
+      setFood({ x: newFoodX, y: newFoodY });
+  
+      // Optionally, you can also grow the snake here
+    } else {
+      // If the food wasn't eaten, no need to change its position
+      setFood(food);
+    }
+  };
   
   useEffect(() => {
     const gameLoop = setInterval(() => {
       updateSnakePosition();
+      updateFoodPosition();
     }, 100); // Update every 100ms
   
     return () => clearInterval(gameLoop); // Clean up
-  }, [snake, dir]);
+  }, [snake, dir, updateSnakePosition, updateFoodPosition]);
   
   
 
   return (
-    <div className='game-container'>
-    <div tabIndex={0} onKeyDown={(e) => handleKeyDown(e)} autoFocus>
-      {createGrid().map((row, rowIndex) => (
-        <div key={rowIndex} style={{ display: 'flex' }}>
-          {row.map((cell, cellIndex) => (
-            <div
-              key={cellIndex}
-              style={{
-                width: 20,
-                height: 20,
-                backgroundColor: cell === 0 ? 'white' : cell === 1 ? 'green' : 'red',
-              }}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
+    <div className='game-container' 
+        tabIndex={0} onKeyDown={(e) => handleKeyDown(e)}
+         autoFocus
+    >
+      <div className="game-grid"> {/* Apply the game-grid class here */}
+        {createGrid().map((row, rowIndex) => (
+          <div key={rowIndex} style={{ display: 'flex' }}>
+            {row.map((cell, cellIndex) => (
+              <div 
+                key={cellIndex}
+                style={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: cell === 0 ? 'white' : cell === 1 ? 'green' : 'red',
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

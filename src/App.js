@@ -4,7 +4,9 @@ import SnakeGame from './components/SnakeGame.js';
 function App() {
   return (
     <div className="App">
-      <h1>Snake Game</h1>
+      <header className="App-header">
+        <h1>Snake Game</h1>
+      </header>
       <SnakeGame />
     </div>
   );

@@ -4,7 +4,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 12vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,5 +14,15 @@
 }
 
 .game-container {
-  background-color: black; /* Set the background color here */
+  background-color: black; /* Background color for the entire game area */
+  /* display: flex; Align the grid inside the container */
+  justify-content: center; /* Center the grid horizontally */
+  align-items: center; /* Center the grid vertically */
+  width: 100%; /* Take the full width of the parent element */
+  height: 100%; /* Take the full height of the parent element */
+}
+
+.game-grid {
+  display: flex; /* Align rows horizontally */
+  flex-direction: column; /* Stack rows vertically */
 }
