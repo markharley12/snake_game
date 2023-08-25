@@ -16,6 +16,7 @@ const SnakeGame = () => {
   const [food, setFood] = useState(INITIAL_FOOD);
   const [dir, setDir] = useState(INITIAL_DIRECTION);
   const [score, setScore] = useState(INITIAL_SCORE);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const createGrid = () => {
     let grid = Array.from({ length: 30 }, () => Array(30).fill(0));
@@ -62,28 +63,28 @@ const SnakeGame = () => {
       case 'UP':
         newHead.y = newHead.y - 1;
         if (newHead.y < 0) {
-          resetGame();
+          gameOver();
           return;
         }
         break;
       case 'DOWN':
         newHead.y = newHead.y + 1;
         if (newHead.y >= GRID_SIZE) {
-          resetGame();
+          gameOver();
           return;
         }
         break;
       case 'LEFT':
         newHead.x = newHead.x - 1;
         if (newHead.x < 0) {
-          resetGame();
+          gameOver();
           return;
         }
         break;
       case 'RIGHT':
         newHead.x = newHead.x + 1;
         if (newHead.x >= GRID_SIZE) {
-          resetGame();
+          gameOver();
           return;
         }
         break;
@@ -94,13 +95,15 @@ const SnakeGame = () => {
     // Check for collision with body
     for (let i = 1; i < newSnake.length; i++) { // Start from 1 to skip the head
       if (newSnake[i].x === newHead.x && newSnake[i].y === newHead.y) {
-        resetGame();  // Call reset game function if collision is detected
+        gameOver();  // Call reset game function if collision is detected
         return;  // Exit the function early
       }
     }
   
     newSnake.unshift(newHead); // Add the new head to the snake
-    newSnake.pop(); // Remove the tail segment
+    if (newHead.x !== food.x || newHead.y !== food.y) {
+      newSnake.pop(); // Remove the tail segment
+    }
   
     setSnake(newSnake); // Update the snake state
   };
@@ -128,10 +131,15 @@ const SnakeGame = () => {
     }
   };
 
+  const gameOver = () => {
+    setIsGameOver(true);
+  };
+
   const resetGame = () => {
     setScore(0);
     setSnake(INITIAL_SNAKE);
     setDir(INITIAL_DIRECTION);
+    setIsGameOver(false);
   };
   
   useEffect(() => {
@@ -146,11 +154,34 @@ const SnakeGame = () => {
   
 
   return (
-    <div className='game-container' 
-        tabIndex={0} onKeyDown={(e) => handleKeyDown(e)}
-         autoFocus
-    >
-      <div className="score-board" style={{backgroundColor: 'orange'}} >Score: {score}</div> {/* Display the score here */}
+    <div className='game-container' tabIndex={0} onKeyDown={(e) => handleKeyDown(e)} autoFocus>
+      <div className="score-board" style={{backgroundColor: 'orange'}}>
+        Score: {score}
+      </div>
+      { isGameOver ? (
+        <div>
+        <div className="game-over-screen">
+          <h1 style={{ fontSize: 80, }}>Game Over!</h1>
+          <button style={{ height: 250, width: 250, fontSize: 50, }} onClick={() => resetGame()}>Restart!</button>
+        </div>
+        <div className="game-grid" style={{display: 'centre' , alignItems: 'center' }}> {/* Apply the game-grid class here */}
+        {createGrid().map((row, rowIndex) => (
+          <div key={rowIndex} style={{ display: 'flex', justifyContent: 'centre' }}>
+            {row.map((cell, cellIndex) => (
+              <div 
+                key={cellIndex}
+                style={{
+                  width: 30,
+                  height: 30,
+                  backgroundColor: cell === 0 ? 'grey' : cell === 1 ? 'green' : 'red',
+                }}
+              />
+            ))}
+          </div>
+          ))}
+        </div>
+        </div>
+      ) : (
       <div className="game-grid" style={{display: 'centre' , alignItems: 'center' }}> {/* Apply the game-grid class here */}
         {createGrid().map((row, rowIndex) => (
           <div key={rowIndex} style={{ display: 'flex', justifyContent: 'centre' }}>
@@ -167,6 +198,7 @@ const SnakeGame = () => {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 };
